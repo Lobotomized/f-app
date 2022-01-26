@@ -4,7 +4,7 @@
   import Register from "./components/register/Register.svelte";
   import Fantasies from "./components/fantasies/Fantasies.svelte";
   import Landing from "./components/landing/Landing.svelte";
-  import Navbar from "./components/navbar/Navbar.svelte";
+  import Navbar from "./components/Navbar/Navbar.svelte";
   import NavbarUnlogged from "./components/navbarunlogged/NavbarUnlogged.svelte";
   import Profile from "./components/profile/Profile.svelte";
   import Write from "./components/write/Write.svelte";
