@@ -342,6 +342,27 @@ button[class^="button"] {
     color: var(--clr-primary-background);
 }
 
+.textAreaSuccess{
+    background-color: var(--clr-success-background);
+    color: var(--clr-success);
+}
+
+
+.textAreaSuccess::-webkit-scrollbar {
+    width: 1em;
+}
+
+.textAreaSuccess::-webkit-scrollbar-track {
+    /* -webkit-box-shadow: inset 0 0 6px var(--clr-primary-background); */
+    background-color:var(--clr-success-background);
+}
+
+
+.textAreaSuccess::-webkit-scrollbar-thumb {
+    background-color: var(--clr-success);
+    outline: none;
+}
+
 
 .textAreaSecondary::-webkit-scrollbar {
     width: 1em;
@@ -359,6 +380,7 @@ button[class^="button"] {
 }
 
 
+
 .textAreaPrimary::-webkit-scrollbar {
     width: 1em;
 }
@@ -373,6 +395,7 @@ button[class^="button"] {
     background-color: var(--clr-secondary);
     outline: none;
 }
+
 
 ::selection {
     color: var(--clr-primary-background);
@@ -403,6 +426,13 @@ p {
 
 .borderPrimary{
     border-color: var(--clr-primary);
+    border-radius: var(--spacing-small);
+    border-width:var(--spacing-tiny);
+    border:solid;
+}
+
+.borderSuccess{
+    border-color: var(--clr-success) !important;
     border-radius: var(--spacing-small);
     border-width:var(--spacing-tiny);
     border:solid;

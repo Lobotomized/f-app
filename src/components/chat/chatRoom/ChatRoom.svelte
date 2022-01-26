@@ -1,11 +1,16 @@
 <script>
   export let room;
+  let selectedChatId = "";
+  import { SelectedChatObserver } from "../../../stores";
+
+  SelectedChatObserver.subscribe(innerChat => {
+    selectedChatId = innerChat;
+  });
 </script>
 
 <style>
   .main {
     margin-bottom: var(--spacing-medium);
-    margin-top: var(--spacing-medium);
     cursor: pointer;
     padding: var(--spacing-medium);
     max-height: 8rem;
@@ -22,20 +27,30 @@
     border-radius: var(--spacing-huge);
   }
 
+  .borderSuccess {
+    color: var(--clr-success) !important;
+  }
+
+  .selected {
+    border-color: yellow;
+  }
   @media only screen and (max-width: 600px) {
-    h5{
-      display:none;
+    h5 {
+      display: none;
     }
-    .main{
-      max-width:50px;
-      border:none;
-      max-height:4rem;
+    .main {
+      max-width: 50px;
+      border: none;
+      max-height: 4rem;
     }
   }
 </style>
 
-<div class="flexRow main borderPrimary flexJustifySpaceBetween">
+<div
+  class="flexRow main flexJustifySpaceBetween {room.newMessages ? 'borderSuccess' : 'borderPrimary'}
+  {selectedChatId === room._id ? 'selected' : ''}">
   <img src="https://via.placeholder.com/300" class="avatar" alt="" />
   <h5>{room.name}</h5>
 
+  <!-- {JSON.stringify(room)} -->
 </div>

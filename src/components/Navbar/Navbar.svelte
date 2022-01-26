@@ -1,5 +1,18 @@
 <script>
   import { link } from "svelte-spa-router";
+  import { UserObserver } from "../../stores";
+  import { onMount } from "svelte";
+  export let count = 0;
+  // onMount(() => {
+  //   api
+  //     .getNewMessagesCount()
+  //     .then(result => {
+  //       count = result.count;
+  //     })
+  //     .catch(err => {
+  //       console.log(err, " wtf");
+  //     });
+  // });
 </script>
 
 <style>
@@ -36,6 +49,12 @@
     text-decoration: none;
     filter: grayscale(100%) opacity(0.7);
     transition: var(--time-small);
+  }
+
+  .hovered-link-class {
+    filter: grayscale(0%) opacity(1);
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
   }
 
   .nav-link:hover {
@@ -211,11 +230,11 @@
     </li>
 
     <li class="nav-item">
-      <a href="/#/" use:link={'/chats'} class="nav-link">
+      <a href="/#/" use:link={'/chats'} class="nav-link {count === 0 ? '' : 'hovered-link-class'}"> 
         <svg
           height="100px"
           width="100px"
-          fill="#ff3e41"
+          fill="currentColor"
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
           version="1.1"
@@ -236,8 +255,8 @@
           <g display="none">
             <path
               display="inline"
-              fill="#ff3e41"
-              stroke="#ff3e41"
+              fill="currentColor"
+              stroke="currentColor"
               stroke-width="2"
               stroke-miterlimit="10"
               d="M29.63,1H14.684
@@ -245,8 +264,8 @@
               c0.747,0,1.359-0.619,1.359-1.376V2.376C30.988,1.619,30.377,1,29.63,1z" />
             <path
               display="inline"
-              fill="#ff3e41"
-              stroke="#ff3e41"
+              fill="currentColor"
+              stroke="currentColor"
               stroke-width="2"
               stroke-miterlimit="10"
               d="M17.316,13.389H2.37
@@ -254,13 +273,13 @@
               c0.747,0,1.359-0.619,1.359-1.376v-9.633C18.675,14.008,18.064,13.389,17.316,13.389z" />
             <path
               display="inline"
-              fill="#ff3e41"
+              fill="currentColor"
               d="M9.847,22.327l-2.611-2.733c-0.613-0.638-0.613-1.626,0-2.246
               c0.285-0.287,0.686-0.446,1.132-0.446c0.417,0,0.801,0.139,1.08,0.394l0.39,0.356l0.396-0.348c0.305-0.267,0.681-0.409,1.085-0.409
               c0.431,0,0.833,0.162,1.126,0.446c0.616,0.623,0.619,1.614,0.003,2.255L9.847,22.327z" />
             <path
               display="inline"
-              fill="#ff3e41"
+              fill="currentColor"
               d="M22.161,10.223L19.55,7.49c-0.613-0.638-0.613-1.626,0-2.246
               c0.285-0.287,0.686-0.446,1.132-0.446c0.417,0,0.801,0.139,1.08,0.394l0.39,0.356l0.396-0.348c0.305-0.267,0.681-0.409,1.085-0.409
               c0.431,0,0.833,0.162,1.126,0.446c0.616,0.623,0.619,1.614,0.003,2.255L22.161,10.223z" />
@@ -289,7 +308,7 @@
         <svg
           height="100px"
           width="100px"
-          fill="#ff3e41"
+          fill="currentColor"
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
           version="1.1"
@@ -404,26 +423,72 @@
     </li>
 
     <li class="nav-item">
-      <a href="/#/" class="nav-link">
+      <a href="/#/write" class="nav-link">
+        <svg
+          width="24px"
+          height="24px"
+          viewBox="-2 -2 24 24"
+          fill="currentColor "
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="xMinYMin"
+          class="jam jam-write">
+          <path
+            d="M5.72 14.456l1.761-.508 10.603-10.73a.456.456 0 0
+            0-.003-.64l-.635-.642a.443.443 0 0 0-.632-.003L6.239 12.635l-.52
+            1.82zM18.703.664l.635.643c.876.887.884 2.318.016 3.196L8.428
+            15.561l-3.764 1.084a.901.901 0 0 1-1.11-.623.915.915 0 0
+            1-.002-.506l1.095-3.84L15.544.647a2.215 2.215 0 0 1 3.159.016zM7.184
+            1.817c.496 0 .898.407.898.909a.903.903 0 0 1-.898.909H3.592c-.992
+            0-1.796.814-1.796 1.817v10.906c0 1.004.804 1.818 1.796
+            1.818h10.776c.992 0 1.797-.814
+            1.797-1.818v-3.635c0-.502.402-.909.898-.909s.898.407.898.91v3.634c0
+            2.008-1.609 3.636-3.593 3.636H3.592C1.608 19.994 0 18.366 0
+            16.358V5.452c0-2.007 1.608-3.635 3.592-3.635h3.592z" />
+        </svg>
+        <span class="link-text">Пиши</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a
+        href="/#/"
+        on:click={() => {
+          localStorage.removeItem('fappUser');
+          localStorage.removeItem('fappToken');
+          UserObserver.set({});
+        }}
+        class="nav-link">
         <svg
           height="100px"
           width="100px"
-          fill="#ff3e41"
+          xmlns:dc="http://purl.org/dc/elements/1.1/"
+          xmlns:cc="http://creativecommons.org/ns#"
+          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+          xmlns:svg="http://www.w3.org/2000/svg"
           xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+          xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+          fill="currentColor"
           version="1.1"
           x="0px"
           y="0px"
-          viewBox="0 0 96 96"
-          enable-background="new 0 0 96 96"
-          xml:space="preserve">
-          <g>
-            <path
-              d="M25.457,8v80h45.086V8H25.457z
-              M68.912,85.787H27.088V10.213h41.824V85.787z" />
-            <polygon
-              points="57.174,17.876 27.919,11.188 27.919,84.812 57.174,78.124 " />
-          </g>
+          viewBox="0 0 100 100">
+          <path
+            d="M 12.6875 5 A 3.0003 3.0003 0 0 0 10 8 L 10 75.34375 A 3.0003
+            3.0003 0 0 0 11.84375 78.125 L 51.84375 94.78125 A 3.0003 3.0003 0 0
+            0 56 92 L 56 78 L 64 78 A 3.0003 3.0003 0 0 0 67 75 L 67 8 A 3.0003
+            3.0003 0 0 0 64 5 L 13 5 A 3.0003 3.0003 0 0 0 12.6875 5 z M
+            27.03125 11 L 61 11 L 61 72 L 56 72 L 56 26 A 3.0003 3.0003 0 0 0
+            54.21875 23.25 L 27.03125 11 z M 16 12.625 L 50 27.9375 L 50 87.5 L
+            16 73.375 L 16 12.625 z M 76.8125 28.96875 A 3.0003 3.0003 0 0 0 75
+            34.21875 L 79.1875 38 L 73 38 A 3.0003 3.0003 0 0 0 72.6875 38 A
+            3.0040663 3.0040663 0 1 0 73 44 L 79.1875 44 L 75 47.78125 A 3.0003
+            3.0003 0 1 0 79 52.21875 L 89 43.21875 A 3.0003 3.0003 0 0 0 89
+            38.78125 L 79 29.78125 A 3.0003 3.0003 0 0 0 76.8125 28.96875 z M
+            36.71875 44.96875 A 3.0003 3.0003 0 0 0 35.8125 50.75 L 41 52.96875
+            L 41 56 A 3.0003 3.0003 0 1 0 47 56 L 47 51 A 3.0003 3.0003 0 0 0
+            45.1875 48.25 L 38.1875 45.25 A 3.0003 3.0003 0 0 0 37.03125
+            44.96875 A 3.0003 3.0003 0 0 0 36.71875 44.96875 z " />
         </svg>
         <span class="link-text">Изход</span>
       </a>
@@ -431,4 +496,3 @@
 
   </ul>
 </nav>
-

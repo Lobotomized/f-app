@@ -1,5 +1,6 @@
 <script>
   export let me;
+  export let message;
 </script>
 
 <style>
@@ -22,25 +23,35 @@
 <div>
   {#if me}
     <p class="message flexColumn flexJustifySpaceBetween">
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio minus
-      delectus sit voluptatibus necessitatibus voluptatem accusamus, nesciunt
-      ipsum suscipit dolore fugiat odit quo cumque doloremque a libero labore
-      commodi modi.
+      {message.content}
       <span class="flexRow flexJustifySpaceBetween">
-        <span class="colorSecondary">Date: 00:00</span>
-        <span class="flexAlignSelfEnd colorSuccess">Author : bla bla</span>
+        {#if message.postedOn}
+          <span class="colorSecondary">
+            {new Date(Date.parse(message.postedOn)).toLocaleTimeString('en-US')}
+          </span>
+        {:else}
+          <span class="colorSecondary">
+            Сега
+          </span>
+        {/if}
+        <span class="flexAlignSelfEnd colorSuccess">Author : Anonymous</span>
       </span>
 
     </p>
   {:else}
     <p class="messageYou colorSecondary flexColumn flexJustifySpaceBetween">
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio minus
-      delectus sit voluptatibus necessitatibus voluptatem accusamus, nesciunt
-      ipsum suscipit dolore fugiat odit quo cumque doloremque a libero labore
-      commodi modi.
+      {message.content}
       <span class="flexRow flexJustifySpaceBetween">
-        <span class="colorPrimary">Date: 00:00</span>
-        <span class="flexAlignSelfEnd colorSuccess">Author : bla bla</span>
+        {#if message.postedOn}
+          <span class="colorPrimary">
+            {new Date(Date.parse(message.postedOn)).toLocaleTimeString('en-US')}
+          </span>
+        {:else}
+          <span class="colorPrimary">
+            Сега
+          </span>
+        {/if}
+        <span class="flexAlignSelfEnd colorSuccess">Author : Anonymous</span>
       </span>
 
     </p>

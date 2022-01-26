@@ -1,3 +1,32 @@
+<script>
+  import { onMount } from "svelte";
+  import { SelectedChatObserver } from "../../stores";
+
+  import api from "../../apiCalls";
+
+  let fantasies = [];
+  let skip = 0;
+
+  onMount(async () => {
+    try {
+      fantasies = await api.getFantasies(skip);
+    } catch (err) {}
+  });
+
+  const startChat = async function(fantasy) {
+    await api.createRoomFromPostId(fantasy._id)
+    const chatRoom = await api.getRoomByPostAndUser(fantasy._id);
+    SelectedChatObserver.set(chatRoom._id);
+    window.location.replace("/#/chats");
+  };
+
+  const loadMore = async function() {
+    let newFantasies = await api.getFantasies(skip);
+    skip += 5;
+    fantasies = [...fantasies, ...newFantasies];
+  };
+</script>
+
 <style>
   .flexColumn {
     padding: var(--spacing-huge);
@@ -16,6 +45,7 @@
   }
   p {
     text-align: center;
+    width: 50%;
   }
 
   @media only screen and (max-width: 600px) {
@@ -32,43 +62,20 @@
     Анонимни
     <span class="colorSecondary">фантазии</span>
   </h1>
-  <p>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Distinctio dolore
-    esse facere ab nam pariatur earum! Doloremque temporibus ratione blanditiis
-    ad sunt ipsam error non, vitae odio expedita eligendi vero possimus nulla
-    harum voluptates quae, eveniet laudantium maxime commodi quibusdam! Harum
-    est quod alias mollitia sit totam sed assumenda id!
-    <br />
-    <button class="buttonSecondary">Пиши</button>
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Distinctio dolore
-    esse facere ab nam pariatur earum! Doloremque temporibus ratione blanditiis
-    ad sunt ipsam error non, vitae odio expedita eligendi vero possimus nulla
-    harum voluptates quae, eveniet laudantium maxime commodi quibusdam! Harum
-    est quod alias mollitia sit totam sed assumenda id!
-    <br />
-    <button class="buttonSecondary">Пиши</button>
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Distinctio dolore
-    esse facere ab nam pariatur earum! Doloremque temporibus ratione blanditiis
-    ad sunt ipsam error non, vitae odio expedita eligendi vero possimus nulla
-    harum voluptates quae, eveniet laudantium maxime commodi quibusdam! Harum
-    est quod alias mollitia sit totam sed assumenda id!
-    <br />
-    <button class="buttonSecondary">Пиши</button>
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Distinctio dolore
-    esse facere ab nam pariatur earum! Doloremque temporibus ratione blanditiis
-    ad sunt ipsam error non, vitae odio expedita eligendi vero possimus nulla
-    harum voluptates quae, eveniet laudantium maxime commodi quibusdam! Harum
-    est quod alias mollitia sit totam sed assumenda id!
-    <br />
-    <button class="buttonSecondary">Пиши</button>
-  </p>
 
-  <a href="/#/" class="neon-button">Зареди още</a>
+  {#each fantasies as fantasy}
+    <p>
+      {fantasy.content}
+      <br />
+      <button
+        on:click={() => {
+          startChat(fantasy);
+        }}
+        class="buttonSecondary">
+        Започни чат
+      </button>
+    </p>
+  {/each}
 
+  <a href="/#/" on:click={loadMore} class="neon-button">Зареди още</a>
 </div>
