@@ -10,7 +10,7 @@
   import Write from "./components/write/Write.svelte";
   import { onMount } from "svelte";
   import Router, { location, link } from "svelte-spa-router";
-  import Login from "./components/login/login.svelte";
+  import Login from "./components/login/Login.svelte";
   import { NewMessagesCount, UserObserver } from "./stores";
   import socket from "./socket";
   import api from "./apiCalls";
