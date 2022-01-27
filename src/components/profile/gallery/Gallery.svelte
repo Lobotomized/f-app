@@ -37,7 +37,22 @@
     margin-left: auto;
     margin-right: auto;
     margin-top: var(--spacing-medium);
+  }
+
+  .uploadUi {
+    padding: var(--spacing-medium);
+    border-radius: var(--spacing-small);
+    font-size: 1rem;
+    font-weight: bolder;
+    cursor: pointer;
+    border: solid;
+    border-width: var(--spacing-tiny);
+    outline: none;
+
+    display: block;
+
     max-width: 40vw;
+    margin: 30px auto 20px;
   }
 
   .neon-button {
@@ -50,6 +65,7 @@
   }
 
   .span4e {
+    margin-top: 10px;
     font-size: 2em;
     cursor: pointer;
   }
@@ -57,11 +73,50 @@
     width: 50px;
     color: var(--clr-primary);
   }
+
+  .photoGallery {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 30px;
+  }
+
+  .photo {
+    margin-bottom: 20px;
+  }
+
+  .photo img {
+    border-radius: var(--spacing-small);
+    max-width: 100%;
+  }
+
+  @media screen and (min-width: 600px) {
+    .photoGallery {
+      padding: 30px 6rem;
+    }
+    .photo {
+      flex-basis: 100%;
+      min-width: 100%;
+    }
+  }
+  @media screen and (min-width: 992px) {
+    .photo {
+      flex-basis: 50%;
+      min-width: 50%;
+    }
+  }
+  @media screen and (min-width: 1200px) {
+    .photo {
+      flex-basis: 33%;
+      min-width: 33%;
+    }
+  }
 </style>
 
 <div>
 
-  <label class="span4e">
+  <label class="uploadUi buttonPrimary">
     <input
       type="file"
       accept=".jpg, .jpeg, .png"
@@ -75,19 +130,23 @@
     {/if}
 
   </label>
-  {#each photos as photo}
-    <div>
-      <img src={photo.imageUrl} class="displayBlock" alt={photo.imageUrl} />
+  
+  <div class="photoGallery">
+    {#each photos as photo}
 
-      <span on:click={async () => {
-        await api.deletePhoto(photo._id);
-        photos = photos.filter((pho) => {
-          console.log(pho._id != photo._id, '   tuka')
-          return pho._id != photo._id
-        })
-      }} class="span4e">ИЗТРИЙ</span>
-    </div>
-  {/each}
+      <div class="photo">
+        <img src={photo.imageUrl} class="displayBlock" alt={photo.imageUrl} />
+
+        <div on:click={async () => {
+          await api.deletePhoto(photo._id);
+          photos = photos.filter((pho) => {
+            console.log(pho._id != photo._id, '   tuka')
+            return pho._id != photo._id
+          })
+        }} class="span4e">ИЗТРИЙ</div>
+      </div>
+    {/each}
+  </div>
 
   {#if photos.length % 20 === 0 && photos.length > 1}
     <span on:click={loadMore} class="neon-button">Зареди още</span>

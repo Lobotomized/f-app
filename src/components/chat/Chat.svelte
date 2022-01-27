@@ -254,14 +254,35 @@
     background: #0c030399;
     z-index: 999999999;
     position: fixed;
-    overflow: scroll;
+    overflow: auto;
+    border-radius: var(--spacing-small);
+    border: solid;
+    border-width: var(--spacing-tiny);
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    flex-wrap: wrap;
+    align-items: start;
   }
 
   .photoInList {
-    max-height: 80%;
     margin: var(--spacing-medium);
-    max-width: 20%;
+    max-width: 25%;
     cursor: pointer;
+    border-radius: var(--spacing-small);
+  }
+  @media only screen and (max-width: 992px) {
+    .photoInList {
+      max-width: calc(50% - 40px);
+    }
+  }
+  @media only screen and (max-width: 600px) {
+    .photoSearch {
+      justify-content: center;
+    }
+    .photoInList {
+      max-width: calc(100% - 30px);
+    }
   }
   .noPhotos {
     text-align: center;
@@ -270,16 +291,17 @@
   }
   @media only screen and (max-width: 600px) {
     .photoSearch {
-      height: 100vh;
-      width: 100vw;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 20px;
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+      width: auto;
+      height: auto;
     }
     .chat {
       padding-left: 0;
       padding: var(--spacing-huge);
+      position: relative;
     }
     .chatsColumnScreen {
       left: 0;

@@ -11,6 +11,8 @@
     max-width: calc(var(--spacing-huge) * 8);
     margin-right: auto;
     line-height: 1.5rem;
+
+    margin: 20px 0px;
   }
 
   .messageYou {
@@ -21,6 +23,7 @@
 
   img{
     max-width:100%;
+    border-radius: var(--spacing-small);
   }
 </style>
 

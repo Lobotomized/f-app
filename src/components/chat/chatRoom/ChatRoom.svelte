@@ -42,6 +42,7 @@
       max-width: 50px;
       border: none;
       max-height: 4rem;
+      padding: 9px;
     }
     .borderSuccess {
       background: var(--clr-success);
