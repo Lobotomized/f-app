@@ -42,6 +42,7 @@
   .neon-button {
     font-size: 2rem;
     text-align: center;
+    margin-bottom: 7rem;
   }
   p {
     text-align: center;

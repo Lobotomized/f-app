@@ -39,6 +39,7 @@
       display: none;
     }
     .main {
+      position: relative;
       max-width: 50px;
       border: none;
       max-height: 4rem;
@@ -47,8 +48,32 @@
     .borderSuccess {
       background: var(--clr-success);
     }
-    .selected {
-      background: var(--clr-secondary);
+    .selected:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        box-shadow: 0 0 2em 0.5em var(--clr-secondary);
+        opacity: 0;
+        background-color: var(--clr-secondary);
+        z-index: -1;
+        transition: opacity 100ms linear;
+    }
+    .selected:before {
+        pointer-events: none;
+        content: "";
+        position: absolute;
+        background: var(--clr-secondary);
+        top: 50%;
+        left: 6px;
+        width: 70%;
+        height: 100%;
+
+        transform: perspective(1em) rotateX(40deg) scale(.7, 0.25);
+      filter: blur(12px);
+        opacity: 0.7;
     }
   }
 </style>
