@@ -29,7 +29,7 @@
 
 <style>
   .flexColumn {
-    padding: var(--spacing-huge);
+    padding: 0 var(--spacing-huge);
   }
   .flexColumn > * {
     max-width: 50%;
@@ -46,6 +46,12 @@
   p {
     text-align: center;
     width: 50%;
+  }
+  .chatWithText {
+    top: var(--spacing-medium);
+    background: var(--clr-primary-background);
+    box-shadow: 0px 0px 20px 7px var(--clr-primary-background);
+    font-size: 2rem;
   }
 
   @media only screen and (max-width: 600px) {
@@ -79,7 +85,7 @@
       </button>
     </p>
   {/each}
-  {#if fantasies.length > 0 && fantasies % 5 === 0}
+  {#if fantasies.length > 0 && fantasies.length % 5 === 0}
     <span on:click={loadMore} class="neon-button">Зареди още</span>
   {:else if fantasies.length === 0}
     <h3 style="text-align:left;">Започнал сте разговор за всяка анонимна фантазия. Изчакайте или споделете своя.</h3>
