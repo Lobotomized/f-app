@@ -73,6 +73,14 @@
     width: 50px;
     color: var(--clr-primary);
   }
+  .closeBtn {
+    margin-left: 10px;
+  }
+  .deleteBtn {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+  }
 
   .photoGallery {
     display: flex;
@@ -143,7 +151,7 @@
             console.log(pho._id != photo._id, '   tuka')
             return pho._id != photo._id
           })
-        }} class="span4e">ИЗТРИЙ</div>
+        }} class="span4e deleteBtn">ИЗТРИЙ <img class="closeBtn" src="/close.svg" alt="Close Icon"/></div>
       </div>
     {/each}
   </div>
