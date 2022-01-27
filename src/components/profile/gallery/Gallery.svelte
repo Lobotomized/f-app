@@ -77,11 +77,37 @@
     margin-left: 10px;
   }
   .deleteBtn {
+    position: relative;
     display: inline-flex;
     flex-direction: row;
     align-items: center;
   }
-
+  .deleteBtn:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-shadow: 0 0 2em 0.5em var(--clr-primary);
+    opacity: 0;
+    background-color: var(--clr-primary);
+    z-index: -1;
+    transition: opacity 100ms linear;
+  }
+  .deleteBtn:before {
+    pointer-events: none;
+    content: "";
+    position: absolute;
+    background: var(--clr-primary);
+    top: 70%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: perspective(1em) rotateX(40deg) scale(1, 0.35);
+    filter: blur(12px);
+    opacity: 0.7;
+  }
   .photoGallery {
     display: flex;
     flex-direction: row;
