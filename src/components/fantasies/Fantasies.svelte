@@ -14,7 +14,7 @@
   });
 
   const startChat = async function(fantasy) {
-    await api.createRoomFromPostId(fantasy._id)
+    await api.createRoomFromPostId(fantasy._id);
     const chatRoom = await api.getRoomByPostAndUser(fantasy._id);
     SelectedChatObserver.set(chatRoom._id);
     window.location.replace("/#/chats");
@@ -54,6 +54,10 @@
       margin-right: 0;
       max-width: 100%;
     }
+
+    .singleFantasy {
+      width: 100%;
+    }
   }
 </style>
 
@@ -62,9 +66,8 @@
     Анонимни
     <span class="colorSecondary">фантазии</span>
   </h1>
-
   {#each fantasies as fantasy}
-    <p>
+    <p class="singleFantasy">
       {fantasy.content}
       <br />
       <button
@@ -76,6 +79,9 @@
       </button>
     </p>
   {/each}
-
-  <a href="/#/" on:click={loadMore} class="neon-button">Зареди още</a>
+  {#if fantasies.length > 0 && fantasies % 5 === 0}
+    <span on:click={loadMore} class="neon-button">Зареди още</span>
+  {:else if fantasies.length === 0}
+    <h3 style="text-align:left;">Започнал сте разговор за всяка анонимна фантазия. Изчакайте или споделете своя.</h3>
+  {/if}
 </div>

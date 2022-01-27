@@ -4,7 +4,8 @@ import { SelectedChatObserver } from "./stores"
 import socket from "./socket";
 
 
-const serverAddress = 'http://localhost:3005';
+const serverAddress = 'https://f-app-be-nsp7m.ondigitalocean.app/api';
+// const serverAddress = 'http://localhost:8080/api';
 
 let selectedChatRoomId = "";
 

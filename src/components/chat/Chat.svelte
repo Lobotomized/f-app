@@ -8,7 +8,7 @@
   import { SelectedChatObserver } from "../../stores";
   import { NewMessagesCount } from "../../stores";
 
-  let phoneChatsOpen = false;
+  let photoMenuOpen = false;
   let messageText = "";
   let chatRooms = [];
   let chatMessages = [];
@@ -17,6 +17,7 @@
 
   let user = {};
   let currMessageCount = 50;
+  let photos = [];
 
   UserObserver.subscribe(innerUser => {
     user = innerUser;
@@ -30,9 +31,28 @@
     chatId = innerChat;
   });
 
+  const selectPhoto = async function(photo) {
+    socket.emit("message", {
+      message: "photo",
+      roomId: chatId,
+      photo: photo._id,
+      photoUrl: photo.imageUrl
+    });
+    chatMessages = [
+      ...chatMessages,
+      {
+        content: "photo",
+        author: user._id,
+        photo: photo._id,
+        photoUrl: photo.imageUrl
+      }
+    ];
+    photoMenuOpen = false;
+  };
+
   const loadMoreMessages = async function() {
     currMessageCount += 50;
-    chatMessages = await api.getMessages(50);
+    chatMessages = await api.getMessages(currMessageCount);
     chatMessages = chatMessages.reverse();
   };
 
@@ -103,10 +123,16 @@
   const leaveRoom = async function() {
     try {
       await api.leaveRoom(chatId);
-      window.location.replace('/#/fantasies')
+      window.location.replace("/#/fantasies");
     } catch (err) {
       console.log(err);
-    };
+    }
+  };
+
+  const openPhotoSearch = async function() {
+    const getThePhotos = await api.getUserPhotos(0);
+    photos = [...getThePhotos.photos];
+    photoMenuOpen = true;
   };
 
   onMount(async () => {
@@ -172,6 +198,7 @@
   }
   textarea {
     margin-right: var(--spacing-huge);
+    min-height: 100px;
   }
 
   .firstColumn {
@@ -214,7 +241,42 @@
     margin-right: var(--spacing-small);
     width: fit-content;
   }
+  .buttonSuccess {
+    margin-left: var(--spacing-small);
+    margin-right: var(--spacing-small);
+  }
+
+  .photoSearch {
+    height: 60%;
+    width: 60%;
+    left: 20%;
+    top: 20%;
+    background: #0c030399;
+    z-index: 999999999;
+    position: fixed;
+    overflow: scroll;
+  }
+
+  .photoInList {
+    max-height: 80%;
+    margin: var(--spacing-medium);
+    max-width: 20%;
+    cursor: pointer;
+  }
+  .noPhotos {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
   @media only screen and (max-width: 600px) {
+    .photoSearch {
+      height: 100vh;
+      width: 100vw;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
     .chat {
       padding-left: 0;
       padding: var(--spacing-huge);
@@ -258,27 +320,51 @@
   }
 </style>
 
-<div class="chat flexRow flexJustifySpaceBetween">
+<div
+  class="chat flexRow flexJustifySpaceBetween"
+  on:click={() => {
+    console.log('vliza l i tuka?');
+    if (photoMenuOpen) {
+      photoMenuOpen = false;
+    }
+  }}>
   <div class="flexColumn firstColumn">
     <h1 class="chatWithText">
       Чат със
       <span class="colorSecondary">Анонимен</span>
     </h1>
 
-    <div class="flexRow">
+    {#if photoMenuOpen}
+      <div class="photoSearch">
+        {#if photos.length}
+          {#each photos as photo}
+            <img
+              src={photo.imageUrl}
+              on:click={() => {
+                selectPhoto(photo);
+              }}
+              class="photoInList"
+              alt="" />
+          {/each}
+        {:else}
+          <h1 class="noPhotos">Нямате качени снимки. Качете от профила си.</h1>
+        {/if}
 
-      <button on:click={leaveRoom} class="buttonPrimary leaveRoom">
-        Излез от стая
-      </button>
-
-      <button on:click={loadMoreMessages} class="buttonSecondary loadMore">
-        Зареди още
-      </button>
-
-    </div>
-
+      </div>
+    {/if}
     <div class="messages">
 
+      <div class="flexRow">
+
+        <button on:click={leaveRoom} class="buttonPrimary leaveRoom">
+          Излез от стая
+        </button>
+
+        <button on:click={loadMoreMessages} class="buttonSecondary loadMore">
+          Зареди още
+        </button>
+
+      </div>
       {#each chatMessages as message}
         {#if message.author === user._id}
           <Message {message} me={true} />
@@ -297,8 +383,14 @@
         id=""
         cols="30"
         rows="5" />
+      <div class="flexRow">
+        <button on:click={openPhotoSearch} class="buttonSuccess">
+          Сподели снимка
+        </button>
 
-      <button on:click={msg} class="buttonSuccess">Изпрати</button>
+        <button on:click={msg} class="buttonSuccess">Изпрати</button>
+      </div>
+
     </div>
   </div>
   <div class="flexColumn chatsColumnScreen">

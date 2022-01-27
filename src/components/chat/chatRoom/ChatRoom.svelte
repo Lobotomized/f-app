@@ -32,7 +32,7 @@
   }
 
   .selected {
-    border-color: yellow;
+    border-color: var(--clr-secondary);
   }
   @media only screen and (max-width: 600px) {
     h5 {
@@ -42,6 +42,12 @@
       max-width: 50px;
       border: none;
       max-height: 4rem;
+    }
+    .borderSuccess {
+      background: var(--clr-success);
+    }
+    .selected {
+      background: var(--clr-secondary);
     }
   }
 </style>
