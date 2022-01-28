@@ -129,7 +129,6 @@
   };
 
   const leaveRoom = async function() {
-    console.log('vliza tuka')
     try {
       await api.leaveRoom(chatId);
       window.location.replace("/#/fantasies");
@@ -202,11 +201,10 @@
   }
   .messages {
     margin-bottom: calc(var(--spacing-huge) * 5);
-    z-index: -2;
   }
   .fixed {
     position: fixed;
-    bottom: 13vh;
+    bottom: 15vh;
     left: calc(50%);
     transform: translateX(-50%);
     z-index: 1;
@@ -269,54 +267,44 @@
     background: #0c030399;
     z-index: 999999999;
     position: fixed;
-    overflow: auto;
-    border-radius: var(--spacing-small);
-    border: solid;
-    border-width: var(--spacing-tiny);
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    flex-wrap: wrap;
-    align-items: start;
+    overflow: scroll;
   }
 
   .photoInList {
+    max-height: 80%;
     margin: var(--spacing-medium);
-    max-width: 25%;
+    max-width: 20%;
     cursor: pointer;
-    border-radius: var(--spacing-small);
-  }
-  @media only screen and (max-width: 992px) {
-    .photoInList {
-      max-width: calc(50% - 40px);
-    }
-  }
-  @media only screen and (max-width: 600px) {
-    .photoSearch {
-      justify-content: center;
-    }
-    .photoInList {
-      max-width: calc(100% - 30px);
-    }
   }
   .noPhotos {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
   }
+  
+  .buttonRow{
+    justify-content: space-around !important;
+  }
   @media only screen and (max-width: 600px) {
+    textarea {
+      margin-right: var(--spacing-huge);
+    }
     .photoSearch {
-      top: 20px;
-      left: 20px;
-      right: 20px;
-      bottom: 20px;
-      width: auto;
-      height: auto;
+      height: 100vh;
+      width: 100vw;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    .buttonSuccess{
+      font-size:0.6rem;
+      padding:var(--spacing-small) !important;
     }
     .chat {
       padding-left: 0;
       padding: var(--spacing-huge);
-      position: relative;
     }
     .chatsColumnScreen {
       left: 0;
@@ -340,6 +328,7 @@
     textarea {
       margin-right: 0px;
       margin-bottom: var(--spacing-small);
+      padding:var(--spacing-small) !important;
     }
     .messages {
       margin-bottom: calc(var(--spacing-huge) * 4);
@@ -350,7 +339,6 @@
     .chatWithText {
       text-align: center;
     }
-
     /* .chatsColumnScreen {
       display: none;
     } */
@@ -420,7 +408,7 @@
         id=""
         cols="30"
         rows="5" />
-      <div class="flexRow">
+      <div class="flexRow buttonRow">
         <button on:click={openPhotoSearch} class="buttonSuccess">
           Сподели снимка
         </button>
