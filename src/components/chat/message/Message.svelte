@@ -11,6 +11,8 @@
     max-width: calc(var(--spacing-huge) * 8);
     margin-right: auto;
     line-height: 1.5rem;
+
+    margin: 20px 0px;
   }
 
   .messageYou {
@@ -21,6 +23,11 @@
 
   img{
     max-width:100%;
+    border-radius: var(--spacing-small);
+  }
+
+  .colorPrimary.muted, .colorSecondary.muted {
+    opacity: 0.6;
   }
 </style>
 
@@ -35,7 +42,7 @@
         {message.content}
         <span class="flexRow flexJustifySpaceBetween">
           {#if message.postedOn}
-            <span class="colorSecondary">
+            <span class="colorSecondary muted">
               {new Date(Date.parse(message.postedOn)).toLocaleTimeString('en-US')}
             </span>
           {:else}
@@ -55,7 +62,7 @@
       {message.content}
       <span class="flexRow flexJustifySpaceBetween">
         {#if message.postedOn}
-          <span class="colorPrimary">
+          <span class="colorPrimary muted">
             {new Date(Date.parse(message.postedOn)).toLocaleTimeString('en-US')}
           </span>
         {:else}

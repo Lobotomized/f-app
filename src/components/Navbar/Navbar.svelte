@@ -119,8 +119,10 @@
   @media only screen and (max-width: 600px) {
     .navbar {
       bottom: 0;
-      width: 100vw;
       height: 5rem;
+      left: 0;
+      right: 0;
+      z-index: 200;
     }
 
     .logo {
