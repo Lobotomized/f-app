@@ -65,7 +65,11 @@
       ];
     }
     messageText = "";
+    setTimeout(() => {
+      window.scrollTo({ top: 999999999999999999999999, behavior: "smooth" });
+    }, 1);
   };
+
   socket.on("connect", () => {
     console.log("connected");
   });
@@ -118,14 +122,25 @@
         return chatRoom;
       }
     });
+
+    setTimeout(() => {
+      window.scrollTo({ top: 999999999999999999999999, behavior: "smooth" });
+    }, 1);
   };
 
   const leaveRoom = async function() {
+    console.log('vliza tuka')
     try {
       await api.leaveRoom(chatId);
       window.location.replace("/#/fantasies");
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const keydown = async function(e) {
+    if (e.code === "Enter") {
+      msg();
     }
   };
 
@@ -323,7 +338,6 @@
 <div
   class="chat flexRow flexJustifySpaceBetween"
   on:click={() => {
-    console.log('vliza l i tuka?');
     if (photoMenuOpen) {
       photoMenuOpen = false;
     }
@@ -377,6 +391,7 @@
 
     <div class="write rowColumn flexJustifyCenter fixed">
       <textarea
+        on:keydown={keydown}
         bind:value={messageText}
         class="textAreaSecondary writingPlace"
         name=""
