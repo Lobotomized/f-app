@@ -1,6 +1,9 @@
 <script>
   import { link } from "svelte-spa-router";
   import { UserObserver } from "../../stores";
+  import { NewMessagesCount } from "../../stores";
+  import { SelectedChatObserver } from "../../stores";
+
   import { onMount } from "svelte";
   export let count = 0;
   // onMount(() => {
@@ -13,6 +16,13 @@
   //       console.log(err, " wtf");
   //     });
   // });
+  // if (window.location.hash != "#/chats") {
+  //   SelectedChatObserver.set("");
+  // }
+
+  NewMessagesCount.subscribe(newMessages => {
+    count = newMessages;
+  });
 </script>
 
 <style>
@@ -232,7 +242,10 @@
     </li>
 
     <li class="nav-item">
-      <a href="/#/" use:link={'/chats'} class="nav-link {count === 0 ? '' : 'hovered-link-class'}"> 
+      <a
+        href="/#/"
+        use:link={'/chats'}
+        class="nav-link {count === 0 ? '' : 'hovered-link-class'}">
         <svg
           height="100px"
           width="100px"
@@ -254,6 +267,10 @@
               width="435.561"
               height="207" />
           </g>
+          <text>
+            {#if count > 0}{count}{/if}
+          </text>
+
           <g display="none">
             <path
               display="inline"
@@ -301,6 +318,7 @@
               c0.389-0.34,0.867-0.521,1.383-0.521c0.549,0,1.061,0.207,1.435,0.568C26.258,5.61,26.261,6.873,25.477,7.689z" />
           </g>
         </svg>
+
         <span class="link-text">Чатове</span>
       </a>
     </li>

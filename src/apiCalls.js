@@ -4,8 +4,8 @@ import { SelectedChatObserver } from "./stores"
 import socket from "./socket";
 
 
-// const serverAddress = 'https://f-app-be-nsp7m.ondigitalocean.app/api';
-const serverAddress = 'http://localhost:8080/api';
+const serverAddress = 'https://f-app-be-nsp7m.ondigitalocean.app/api';
+// const serverAddress = 'http://localhost:8080/api';
 
 let selectedChatRoomId = "";
 
@@ -154,6 +154,17 @@ const api = {
             throw err
         }
     },
+    getMe: async function(){
+        try{
+            const res = await this.get('/getMe');
+            UserObserver.set(res.me[0]);
+
+        }
+        catch(err){
+            throw err
+        }
+
+    },
 
     register: async function (body) {
         try {
@@ -217,6 +228,9 @@ const api = {
         try {
             if (!selectedChatRoomId) {
                 const room = await this.getRoom();
+                if(room.newMessages){
+                    NewMessagesCount.set(newMsgCount - 1);
+                }
                 SelectedChatObserver.set(room._id)
 
                 const res = await this.get('/loadMessages/' + room._id + '?limit=' + limit);

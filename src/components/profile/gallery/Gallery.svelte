@@ -174,7 +174,6 @@
         <div on:click={async () => {
           await api.deletePhoto(photo._id);
           photos = photos.filter((pho) => {
-            console.log(pho._id != photo._id, '   tuka')
             return pho._id != photo._id
           })
         }} class="span4e deleteBtn">ИЗТРИЙ <img class="closeBtn" src="/close.svg" alt="Close Icon"/></div>

@@ -26,7 +26,6 @@
   }
 
   NewMessagesCount.subscribe(innerMessages => {
-    console.log(innerMessages, ' wtf')
     newMessagesCount = innerMessages;
   });
 
@@ -35,7 +34,6 @@
     api
       .getNewMessagesCount()
       .then(result => {
-        console.log(result, '   count') 
         NewMessagesCount.set(result.count);
       })
       .catch(err => {
@@ -45,7 +43,6 @@
 
   const connect = function() {
     socket.auth = { userId: user._id };
-    console.log(socket.auth);
     socket.connect();
   };
 

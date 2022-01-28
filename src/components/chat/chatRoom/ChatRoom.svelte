@@ -79,7 +79,7 @@
 </style>
 
 <div
-  class="flexRow main flexJustifySpaceBetween {room.newMessages ? 'borderSuccess' : 'borderPrimary'}
+  class="flexRow main flexJustifySpaceBetween {room.newMessages && selectedChatId !== room._id ? 'borderSuccess' : 'borderPrimary'}
   {selectedChatId === room._id ? 'selected' : ''}">
   <img src="https://via.placeholder.com/300" class="avatar" alt="" />
   <h5>{room.name}</h5>
