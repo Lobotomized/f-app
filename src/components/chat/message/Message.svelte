@@ -21,13 +21,22 @@
     line-height: 1.5rem;
   }
 
-  img{
-    max-width:100%;
+  img {
+    max-width: 100%;
     border-radius: var(--spacing-small);
   }
 
-  .colorPrimary.muted, .colorSecondary.muted {
+  .colorPrimary.muted,
+  .colorSecondary.muted {
     opacity: 0.6;
+  }
+  .nowText{
+    font-size: 0.7rem;
+  }
+  @media only screen and (max-width: 600px) {
+    .message, .messageYou{
+      padding:var(--spacing-small);
+    }
   }
 </style>
 
@@ -42,13 +51,13 @@
         {message.content}
         <span class="flexRow flexJustifySpaceBetween">
           {#if message.postedOn}
-            <span class="colorSecondary muted">
+            <span class="colorSecondary muted nowText">
               {new Date(Date.parse(message.postedOn)).toLocaleTimeString('en-US')}
             </span>
           {:else}
-            <span class="colorSecondary muted">Сега</span>
+            <span class="colorSecondary muted nowText">Сега</span>
           {/if}
-          <span class="flexAlignSelfEnd colorSuccess">Author : Anonymous</span>
+          <span class="flexAlignSelfEnd colorSuccess nowText">Author : Anonymous</span>
         </span>
 
       </p>
@@ -62,13 +71,13 @@
       {message.content}
       <span class="flexRow flexJustifySpaceBetween">
         {#if message.postedOn}
-          <span class="colorPrimary muted">
+          <span class="colorPrimary muted nowText">
             {new Date(Date.parse(message.postedOn)).toLocaleTimeString('en-US')}
           </span>
         {:else}
-          <span class="colorPrimary muted">Сега</span>
+          <span class="colorPrimary muted nowText">Сега</span>
         {/if}
-        <span class="flexAlignSelfEnd colorSuccess">Author : Anonymous</span>
+        <span class="flexAlignSelfEnd colorSuccess nowText">Author : Anonymous</span>
       </span>
     </p>
   {/if}

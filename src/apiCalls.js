@@ -4,8 +4,8 @@ import { SelectedChatObserver } from "./stores"
 import socket from "./socket";
 
 
-const serverAddress = 'https://f-app-be-nsp7m.ondigitalocean.app/api';
-// const serverAddress = 'http://localhost:8080/api';
+// const serverAddress = 'https://f-app-be-nsp7m.ondigitalocean.app/api';
+const serverAddress = 'http://localhost:8080/api';
 
 let selectedChatRoomId = "";
 
@@ -64,7 +64,9 @@ const api = {
                 if (jsonBody?.errors?.code === 11000) {
                     throw new Error('Имейлът е вече използван')
                 }
-                throw new Error('Нещо не е наред')
+
+                
+                throw new Error(jsonBody.message)
             }
             const jsonResponse = await res.json();
 
@@ -79,11 +81,12 @@ const api = {
                 },
                 body: JSON.stringify(body)
             });
-            if (res.status > 400 && res.status < 600) {
-                throw new Error('Нещо не е наред')
-            }
             const jsonResponse = await res.json();
 
+            if (res.status > 400 && res.status < 600) {
+                throw new Error(jsonResponse.message)
+            }
+            
             return jsonResponse;
         }
     },
