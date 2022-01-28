@@ -46,7 +46,7 @@
               {new Date(Date.parse(message.postedOn)).toLocaleTimeString('en-US')}
             </span>
           {:else}
-            <span class="colorSecondary">Сега</span>
+            <span class="colorSecondary muted">Сега</span>
           {/if}
           <span class="flexAlignSelfEnd colorSuccess">Author : Anonymous</span>
         </span>
@@ -66,7 +66,7 @@
             {new Date(Date.parse(message.postedOn)).toLocaleTimeString('en-US')}
           </span>
         {:else}
-          <span class="colorPrimary">Сега</span>
+          <span class="colorPrimary muted">Сега</span>
         {/if}
         <span class="flexAlignSelfEnd colorSuccess">Author : Anonymous</span>
       </span>
