@@ -1,14 +1,13 @@
 <script>
   import Gallery from "./gallery/Gallery.svelte";
   import Characteristics from "./characteristics/Characteristics.svelte";
-import { UserObserver } from "../../stores";
-
+  import { UserObserver } from "../../stores";
 
   let user = {};
 
-  UserObserver.subscribe((innerUser) => {
+  UserObserver.subscribe(innerUser => {
     user = innerUser;
-  })
+  });
 </script>
 
 <style>
@@ -18,10 +17,17 @@ import { UserObserver } from "../../stores";
     text-align: center;
     padding-bottom: 40px;
   }
+  p{
+    max-width:fit-content;
+    margin-left:auto;
+    margin-right:auto;
+    color:var(--clr-secondary);
+  }
 </style>
 
 <div>
   <h1>Здравей {user.username}</h1>
+  <p>Аватарът е видим само за потребители, на които си споделил профил</p>
   <Gallery />
   <!-- <Characteristics /> -->
 </div>

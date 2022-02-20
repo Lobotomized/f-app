@@ -65,7 +65,7 @@ const api = {
                     throw new Error('Имейлът е вече използван')
                 }
 
-                
+
                 throw new Error(jsonBody.message)
             }
             const jsonResponse = await res.json();
@@ -86,7 +86,7 @@ const api = {
             if (res.status > 400 && res.status < 600) {
                 throw new Error(jsonResponse.message)
             }
-            
+
             return jsonResponse;
         }
     },
@@ -154,13 +154,13 @@ const api = {
             throw err
         }
     },
-    getMe: async function(){
-        try{
+    getMe: async function () {
+        try {
             const res = await this.get('/getMe');
             UserObserver.set(res.me[0]);
 
         }
-        catch(err){
+        catch (err) {
             throw err
         }
 
@@ -205,6 +205,16 @@ const api = {
         }
     },
 
+    getRoomSecretInfo: async function(roomId){
+        try{
+            const res = await this.get('/roomSecretInfo/'+roomId)
+            return res;
+        }
+        catch(err){
+            throw err;
+        }
+    },
+
     getRooms: async function () {
         try {
             const res = await this.get('/loadRooms');
@@ -223,12 +233,11 @@ const api = {
             throw err
         }
     },
-
     getMessages: async function (limit) {
         try {
             if (!selectedChatRoomId) {
                 const room = await this.getRoom();
-                if(room.newMessages){
+                if (room.newMessages) {
                     NewMessagesCount.set(newMsgCount - 1);
                 }
                 SelectedChatObserver.set(room._id)
@@ -276,7 +285,7 @@ const api = {
     createRoomFromPostId: async function (postId) {
         try {
             const chatRoom = await this.post('/createRoomFromPostId', { postId: postId });
-            socket.emit('joinFromPost', postId)
+            socket.emit('joinFromPost', {postId:postId, chatId:chatRoom._id})
             return chatRoom;
         }
         catch (err) {
@@ -297,7 +306,26 @@ const api = {
         try {
             await this.post('/leaveRoom', { roomId: roomId })
         }
-        catch(err){
+        catch (err) {
+            throw err;
+        }
+    },
+
+    setAvatar: async function (photoId) {
+        try {
+            await this.post('/setAvatar', { photoId: photoId })
+        }
+        catch (err) {
+            throw err;
+        }
+    },
+
+    setProfileShareToTrue: async function (roomId) {
+        try {
+            const room = await this.post('/setProfileShareToTrue', { roomId: roomId })
+            return room;
+        }
+        catch (err) {
             throw err;
         }
     }

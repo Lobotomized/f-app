@@ -1,6 +1,7 @@
 <script>
   export let me;
   export let message;
+  export let otherGuy
 </script>
 
 <style>
@@ -57,7 +58,7 @@
           {:else}
             <span class="colorSecondary muted nowText">Сега</span>
           {/if}
-          <span class="flexAlignSelfEnd colorSuccess nowText">Author : Anonymous</span>
+          <span class="flexAlignSelfEnd colorSuccess nowText">От мен</span>
         </span>
 
       </p>
@@ -77,7 +78,7 @@
         {:else}
           <span class="colorPrimary muted nowText">Сега</span>
         {/if}
-        <span class="flexAlignSelfEnd colorSuccess nowText">Author : Anonymous</span>
+        <span class="flexAlignSelfEnd colorSuccess nowText">От {otherGuy.username}</span>
       </span>
     </p>
   {/if}

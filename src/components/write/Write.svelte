@@ -31,6 +31,7 @@
     align-items: center;
     margin-left: var(--spacing-huge);
     margin-right: var(--spacing-huge);
+    padding-bottom:10vh;
   }
 
   .container > * {

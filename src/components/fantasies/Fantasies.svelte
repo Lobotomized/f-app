@@ -56,6 +56,9 @@
   }
 
   @media only screen and (max-width: 600px) {
+    .flexColumn {
+      padding-bottom: 200px;
+    }
     .flexColumn > * {
       margin-left: 0;
       margin-right: 0;
@@ -89,6 +92,9 @@
   {#if fantasies.length > 0 && fantasies.length % 5 === 0}
     <span on:click={loadMore} class="neon-button">Зареди още</span>
   {:else if fantasies.length === 0}
-    <h3 style="text-align:left;">Започнал сте разговор за всяка анонимна фантазия. Изчакайте или споделете своя.</h3>
+    <h3 style="text-align:left;">
+      Започнал сте разговор за всяка анонимна фантазия. Изчакайте или споделете
+      своя.
+    </h3>
   {/if}
 </div>

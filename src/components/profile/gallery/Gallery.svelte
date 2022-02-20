@@ -1,11 +1,17 @@
 <script>
   import { onMount } from "svelte";
+  import { UserObserver } from "../../../stores";
 
   import api from "../../../apiCalls";
 
+  let user = {};
   let photos = [];
   let photosSkip = 0;
   let loading = false;
+
+  UserObserver.subscribe(innerUser => {
+    user = innerUser;
+  });
 
   const loadMore = async function() {
     photosSkip += 20;
@@ -27,6 +33,7 @@
 
   onMount(async () => {
     const getThePhotos = await api.getUserPhotos(photosSkip);
+    await api.getMe();
     photos = [...getThePhotos.photos];
   });
 </script>
@@ -73,41 +80,6 @@
     width: 50px;
     color: var(--clr-primary);
   }
-  .closeBtn {
-    margin-left: 10px;
-  }
-  .deleteBtn {
-    position: relative;
-    display: inline-flex;
-    flex-direction: row;
-    align-items: center;
-  }
-  .deleteBtn:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    box-shadow: 0 0 2em 0.5em var(--clr-primary);
-    opacity: 0;
-    background-color: var(--clr-primary);
-    z-index: -1;
-    transition: opacity 100ms linear;
-  }
-  .deleteBtn:before {
-    pointer-events: none;
-    content: "";
-    position: absolute;
-    background: var(--clr-primary);
-    top: 70%;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transform: perspective(1em) rotateX(40deg) scale(1, 0.35);
-    filter: blur(12px);
-    opacity: 0.7;
-  }
   .photoGallery {
     display: flex;
     flex-direction: row;
@@ -117,7 +89,8 @@
   }
 
   .photo {
-    margin-bottom: 20px;
+    margin: var(--spacing-medium);
+    padding: var(--spacing-medium);
   }
 
   .photo img {
@@ -133,6 +106,10 @@
       flex-basis: 100%;
       min-width: 100%;
     }
+  }
+
+  .flexRow {
+    justify-content: space-around;
   }
   @media screen and (min-width: 992px) {
     .photo {
@@ -164,19 +141,33 @@
     {/if}
 
   </label>
-  
+
   <div class="photoGallery">
     {#each photos as photo}
-
-      <div class="photo">
+      <div class="photo {photo._id === user.avatar ? 'borderSuccess' : ''}" >
         <img src={photo.imageUrl} class="displayBlock" alt={photo.imageUrl} />
+        <div class="flexRow">
+          <div
+            on:click={async () => {
+              await api.deletePhoto(photo._id);
+              photos = photos.filter(pho => {
+                return pho._id != photo._id;
+              });
+            }}
+            class="span4e buttonPrimary">
+            ИЗТРИЙ
+          </div>
 
-        <div on:click={async () => {
-          await api.deletePhoto(photo._id);
-          photos = photos.filter((pho) => {
-            return pho._id != photo._id
-          })
-        }} class="span4e deleteBtn">ИЗТРИЙ <img class="closeBtn" src="/close.svg" alt="Close Icon"/></div>
+          <div
+            on:click={async () => {
+              await api.setAvatar(photo._id);
+              await api.getMe();
+            }}
+            class="span4e buttonSuccess">
+            СЛОЖИ АВАТАР
+          </div>
+        </div>
+
       </div>
     {/each}
   </div>

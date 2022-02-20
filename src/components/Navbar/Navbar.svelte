@@ -245,7 +245,7 @@
       <a
         href="/#/"
         use:link={'/chats'}
-        class="nav-link {count === 0 ? '' : 'hovered-link-class'}">
+        class="nav-link {!count ? '' : 'hovered-link-class'}">
         <svg
           height="100px"
           width="100px"

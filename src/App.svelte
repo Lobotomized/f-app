@@ -8,7 +8,7 @@
   import NavbarUnlogged from "./components/navbarunlogged/NavbarUnlogged.svelte";
   import Profile from "./components/profile/Profile.svelte";
   import Write from "./components/write/Write.svelte";
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import Router, { location, link } from "svelte-spa-router";
   import Login from "./components/login/Login.svelte";
   import { NewMessagesCount, UserObserver } from "./stores";
@@ -18,17 +18,21 @@
   let user = {};
   let newMessagesCount = 0;
 
-  UserObserver.subscribe(innerUser => {
+  const unsubscribeUser = UserObserver.subscribe(innerUser => {
     user = innerUser;
   });
   if (localStorage.getItem("fappUser")) {
     UserObserver.set(JSON.parse(localStorage.getItem("fappUser")));
   }
-
-  NewMessagesCount.subscribe(innerMessages => {
+  
+  const unsubscribeMessages = NewMessagesCount.subscribe(innerMessages => {
     newMessagesCount = innerMessages;
   });
 
+  onDestroy(() =>{
+    unsubscribeUser()
+    unsubscribeMessages();
+  })
   onMount(() => {
     connect();
     api

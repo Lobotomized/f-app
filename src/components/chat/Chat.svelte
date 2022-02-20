@@ -16,20 +16,34 @@
   let newMsgCount = 0;
 
   let user = {};
-  let currMessageCount = 50;
+  let currMessageCount = 5;
   let photos = [];
+  let currentRoom = {};
+  let otherGuy = {};
 
-  UserObserver.subscribe(innerUser => {
+  const unsubscribeUser = UserObserver.subscribe(innerUser => {
     user = innerUser;
   });
 
-  NewMessagesCount.subscribe(innerMsgCount => {
+  const unsubscribeMessages = NewMessagesCount.subscribe(innerMsgCount => {
     newMsgCount = innerMsgCount;
   });
 
   SelectedChatObserver.subscribe(innerChat => {
     chatId = innerChat;
   });
+
+  onDestroy(() => {
+    unsubscribeMessages();
+    unsubscribeUser();
+  });
+
+  const shareProfile = async function() {
+    const innerRoom = await api.setProfileShareToTrue(chatId);
+    console.log('vliza tuka ', innerRoom)
+    currentRoom.profileShareByAuthor = innerRoom.room.profileShareByAuthor;
+    currentRoom.profileShareByResponder = innerRoom.room.profileShareByResponder;
+  };
 
   const selectPhoto = async function(photo) {
     socket.emit("message", {
@@ -76,6 +90,14 @@
   socket.on("message", async receivable => {
     if (receivable.roomId != chatId) {
       // NewMessagesCount.set(0);
+
+      const existingRoom = chatRooms.find(roo => {
+        return roo._id === receivable.roomId;
+      });
+
+      if (!existingRoom) {
+        chatRooms = await api.getRooms();
+      }
       chatRooms = chatRooms.map(chatRoom => {
         if (chatRoom._id === receivable.roomId) {
           if (!chatRoom.newMessages) {
@@ -110,7 +132,9 @@
         ...chatMessages,
         {
           content: receivable.message,
-          author: receivable.author
+          author: receivable.author,
+          photo: receivable.photo,
+          photoUrl: receivable.imageUrl
         }
       ];
     }
@@ -118,9 +142,15 @@
 
   const changeRoom = async function(roomId) {
     await api.getMe();
-
+    try {
+      otherGuy = await api.getRoomSecretInfo(roomId);
+    } catch (err) {}
+    currentRoom = chatRooms.find(roo => {
+      return roo._id === roomId;
+    });
     SelectedChatObserver.set(roomId);
     let messages = await api.getMessages(5);
+    currMessageCount = 5;
     messages = messages.reverse();
     chatMessages = [...messages];
     chatRooms = chatRooms.map(chatRoom => {
@@ -171,7 +201,9 @@
 
   onMount(async () => {
     await api.getMe();
+
     chatRooms = await api.getRooms();
+
     chatRooms = chatRooms.map(mappedRoom => {
       if (
         !mappedRoom.seenByAuthor &&
@@ -190,7 +222,7 @@
       }
     });
     if (chatId != "") {
-      chatMessages = await api.getMessages(5);
+      chatMessages = await api.getMessages(0);
       chatMessages = chatMessages.reverse();
     }
   });
@@ -204,7 +236,7 @@
   .write {
     background: var(--clr-primary-background);
     box-shadow: 0px 0px 20px 7px var(--clr-primary-background);
-    max-height: 8rem;
+    max-height: 15vh;
   }
 
   .chatWithText {
@@ -216,7 +248,7 @@
     font-size: 2rem;
   }
   .writingPlace {
-    min-width: 50vw;
+    min-width: 30vw;
   }
 
   .writingPlace:focus {
@@ -310,10 +342,21 @@
   .buttonRow {
     justify-content: space-around !important;
   }
+
+  .fantasiesLink {
+    color: var(--clr-primary);
+  }
+
+  h3 {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  .buttonSecondary {
+    font-size: 0.8rem;
+  }
   @media only screen and (max-width: 600px) {
-    textarea {
-      margin-right: var(--spacing-huge);
-    }
     .photoSearch {
       height: 100vh;
       width: 100vw;
@@ -346,11 +389,12 @@
     .firstColumn {
       margin-right: 0;
     }
-    .rowColumn {
+    /* .rowColumn {
       flex-direction: column;
       align-content: center;
-    }
+    } */
     textarea {
+      margin-right: var(--spacing-huge);
       margin-right: 0px;
       margin-bottom: var(--spacing-small);
       padding: var(--spacing-small) !important;
@@ -364,6 +408,11 @@
     .chatWithText {
       text-align: center;
     }
+
+    .write {
+      margin-bottom: 100px;
+    }
+
     /* .chatsColumnScreen {
       display: none;
     } */
@@ -381,8 +430,12 @@
   {#if chatId != ''}
     <div class="flexColumn firstColumn">
       <h1 class="chatWithText">
-        Чат със
-        <span class="colorSecondary">Анонимен</span>
+        Чат с
+        {#if otherGuy.username}
+          <span class="colorSecondary">{otherGuy.username}</span>
+        {:else}
+          <span class="colorSecondary">Анонимен</span>
+        {/if}
       </h1>
 
       {#if photoMenuOpen}
@@ -420,9 +473,9 @@
         </div>
         {#each chatMessages as message}
           {#if message.author === user._id}
-            <Message {message} me={true} />
+            <Message {otherGuy} {message} me={true} />
           {:else}
-            <Message {message} me={false} />
+            <Message {otherGuy} {message} me={false} />
           {/if}
         {/each}
 
@@ -434,13 +487,19 @@
           bind:value={messageText}
           class="textAreaSecondary writingPlace"
           name=""
-          id=""
-          cols="30"
-          rows="5" />
+          id="" />
         <div class="flexRow buttonRow">
-          <button on:click={openPhotoSearch} class="buttonSuccess">
-            Сподели снимка
-          </button>
+          {#if currentRoom.profileShareByResponder && currentRoom.profileShareByAuthor}
+            <button on:click={openPhotoSearch} class="buttonSuccess">
+              Сподели снимка
+            </button>
+          {:else if (!currentRoom.profileShareByAuthor && !currentRoom.profileShareByResponder) || (!currentRoom.profileShareByResponder && user.responderRooms.indexOf(chatId) > -1) || (!currentRoom.profileShareByAuthor && user.authorRooms.indexOf(chatId) > -1)}
+            <button on:click={shareProfile} class="buttonSuccess">
+              Сподели профил
+            </button>
+          {:else}
+            <button class="buttonSecondary">Събеседникът не е разрешил</button>
+          {/if}
 
           <button on:click={msg} class="buttonSuccess">Изпрати</button>
         </div>
@@ -448,7 +507,14 @@
       </div>
     </div>
   {/if}
+  {#if chatRooms.length === 0}
+    <h3>
+      Нямате активни чатове. Започнете такъв от
+      <a class="fantasiesLink" href="#/fantasies">Анонимни фантазии</a>
+    </h3>
+  {/if}
   <div class="flexColumn chatsColumnScreen">
+
     {#each chatRooms as room}
       <div
         on:click={() => {
