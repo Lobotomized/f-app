@@ -70,7 +70,7 @@
   }
 </style>
 
-<div class="containElement flexColumn flexAlignCenter">
+<form class="containElement flexColumn flexAlignCenter">
   <label
     for="inputPrimary"
     class={validateEmail(email) && !error ? 'colorSuccess' : 'colorPrimary'}>
@@ -127,10 +127,11 @@
   {#if error}
     <span>{error.message}</span>
   {/if}
-  <span
+  <button
     on:click={register}
+    on:submit={register}
     class={password.length > 4 && acceptTerms && password === passwordSecond && psevdonim.length > 4 && !error && validateEmail(email) ? 'neon-button-success' : 'neon-button'}>
     Регистрирай се
-  </span>
+  </button>
 
-</div>
+</form>

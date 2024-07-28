@@ -135,6 +135,7 @@ button[class^="button"] {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    background: var(--clr-primary-background);
 }
 
 .neon-button::before {
@@ -214,6 +215,7 @@ button[class^="button"] {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    background: var(--clr-primary-background);  
 }
 
 .neon-button-success::before {

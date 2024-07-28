@@ -79,9 +79,9 @@
   {#if loading}
     <img style="width:50px" src="/loading.svg" alt="" />
   {/if}
-  <span
+  <button
     on:click={login}
     class={password.length > 4 && validateEmail(email) && !broken ? 'neon-button-success' : 'neon-button'}>
     Заповядай
-  </span>
+  </button>
 </div>
