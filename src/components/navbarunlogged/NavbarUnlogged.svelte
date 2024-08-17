@@ -149,7 +149,7 @@
 <nav class="navbar">
   <ul class="navbar-nav">
     <li class="logo">
-      <a href="/#/" use:link={'/'} class="nav-link">
+      <a href="/?#/" use:link={'/'} class="nav-link">
         <span class="link-text logo-text">Меню</span>
         <svg
           aria-hidden="true"
@@ -181,7 +181,7 @@
     </li>
 
     <li class="nav-item">
-      <a href="/#/login" class="nav-link">
+      <a href="/?#/login" class="nav-link">
         <svg
           height="100px"
           width="100px"

@@ -181,7 +181,7 @@
   const leaveRoom = async function() {
     try {
       await api.leaveRoom(chatId);
-      window.location.replace("/#/fantasies");
+      window.location.replace("/?#/fantasies");
     } catch (err) {
       console.log(err);
     }
@@ -493,7 +493,7 @@
             <button on:click={openPhotoSearch} class="buttonSuccess">
               Сподели снимка
             </button>
-          {:else if (!currentRoom.profileShareByAuthor && !currentRoom.profileShareByResponder) || (!currentRoom.profileShareByResponder && user.responderRooms.indexOf(chatId) > -1) || (!currentRoom.profileShareByAuthor && user.authorRooms.indexOf(chatId) > -1)}
+          {:else if (!currentRoom.profileShareByAuthor && !currentRoom.profileShareByResponder) || (!currentRoom.profileShareByResponder && user.responderRooms?.indexOf(chatId) > -1) || (!currentRoom.profileShareByAuthor && user.authorRooms?.indexOf(chatId) > -1)}
             <button on:click={shareProfile} class="buttonSuccess">
               Сподели профил
             </button>

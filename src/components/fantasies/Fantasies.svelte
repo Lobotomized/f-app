@@ -10,6 +10,7 @@
   onMount(async () => {
     try {
       fantasies = await api.getFantasies(skip);
+      skip += 5;
     } catch (err) {}
   });
 
@@ -17,7 +18,7 @@
     await api.createRoomFromPostId(fantasy._id);
     const chatRoom = await api.getRoomByPostAndUser(fantasy._id);
     SelectedChatObserver.set(chatRoom._id);
-    window.location.replace("/#/chats");
+    window.location.replace("/?#/chats");
   };
 
   const loadMore = async function() {

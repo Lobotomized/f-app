@@ -10,7 +10,7 @@ import { onDestroy } from "svelte";
 
   const unsubscribeUser = UserObserver.subscribe(innerUser => {
     user = innerUser;
-    if(user.responderRooms.indexOf(room._id) != -1){
+    if(user.responderRooms?.indexOf(room._id) != -1){
       whoAmI = "responder";
     }
     else{

@@ -10,7 +10,7 @@
     try {
       await apiCalls.write(content);
       loading = false;
-      window.location.replace("/#/fantasies");
+      window.location.replace("/?#/fantasies");
     } catch (err) {
       error = err;
       loading = false;

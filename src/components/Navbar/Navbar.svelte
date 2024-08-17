@@ -180,7 +180,7 @@
 <nav class="navbar">
   <ul class="navbar-nav">
     <li class="logo">
-      <a href="/#/" use:link={'/'} class="nav-link">
+      <a href="/?#/" use:link={'/'} class="nav-link">
         <span class="link-text logo-text">Меню</span>
         <svg
           aria-hidden="true"
@@ -212,7 +212,7 @@
     </li>
 
     <li class="nav-item">
-      <a href="/#/" use:link={'/profile'} class="nav-link">
+      <a href="/?#/" use:link={'/profile'} class="nav-link">
         <svg
           height="100px"
           width="100px"
@@ -243,7 +243,7 @@
 
     <li class="nav-item">
       <a
-        href="/#/"
+        href="/?#/"
         use:link={'/chats'}
         class="nav-link {!count ? '' : 'hovered-link-class'}">
         <svg
@@ -324,7 +324,7 @@
     </li>
 
     <li class="nav-item">
-      <a href="/#/" use:link={'/fantasies'} class="nav-link">
+      <a href="/?#/" use:link={'/fantasies'} class="nav-link">
         <svg
           height="100px"
           width="100px"
@@ -443,7 +443,7 @@
     </li>
 
     <li class="nav-item">
-      <a href="/#/write" class="nav-link">
+      <a href="/?#/write" class="nav-link">
         <svg
           width="24px"
           height="24px"
@@ -471,7 +471,7 @@
 
     <li class="nav-item">
       <a
-        href="/#/"
+        href="/?#/"
         on:click={() => {
           localStorage.removeItem('fappUser');
           localStorage.removeItem('fappToken');

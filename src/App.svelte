@@ -9,7 +9,7 @@
   import Profile from "./components/profile/Profile.svelte";
   import Write from "./components/write/Write.svelte";
   import { onDestroy, onMount } from "svelte";
-  import Router, { location, link } from "svelte-spa-router";
+  import Router from "svelte-spa-router";
   import Login from "./components/login/Login.svelte";
   import { NewMessagesCount, UserObserver } from "./stores";
   import socket from "./socket";

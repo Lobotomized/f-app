@@ -56,14 +56,14 @@
       justifyContentSpaceBetween">
       <button
         on:click={() => {
-          location.assign('/#/login');
+          location.assign('/?#/login');
         }}
         class="buttonPrimary">
         Влез
       </button>
       <button
         on:click={() => {
-          location.assign('/#/register');
+          location.assign('/?#/register');
         }}
         class="buttonPrimary">
         Регистрирай се

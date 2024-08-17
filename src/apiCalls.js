@@ -4,8 +4,8 @@ import { SelectedChatObserver } from "./stores"
 import socket from "./socket";
 
 
-const serverAddress = 'https://f-app-be-nsp7m.ondigitalocean.app/api';
-// const serverAddress = 'http://localhost:8080/api';
+//const serverAddress = 'https://f-app-be-nsp7m.ondigitalocean.app/api';
+const serverAddress = 'http://localhost:8080/api';
 
 let selectedChatRoomId = "";
 
@@ -52,20 +52,26 @@ const api = {
     },
     post: async function (endpoint, body) {
         if (!localStorage.getItem("fappToken")) {
-            const res = await fetch(serverAddress + endpoint, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(body)
-            });
+            let res;
+            try{
+                console.log(body, '  bodito  ', serverAddress + endpoint)
+                res = await fetch(serverAddress + endpoint, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                });
+
+            }
+            catch(err){
+            }
+
             if (res.status > 400 && res.status < 600) {
                 const jsonBody = await res.json();
                 if (jsonBody?.errors?.code === 11000) {
                     throw new Error('Имейлът е вече използван')
                 }
-
-
                 throw new Error(jsonBody.message)
             }
             const jsonResponse = await res.json();
@@ -82,7 +88,7 @@ const api = {
                 body: JSON.stringify(body)
             });
             const jsonResponse = await res.json();
-
+            console.log('a da ne e tuka be?')
             if (res.status > 400 && res.status < 600) {
                 throw new Error(jsonResponse.message)
             }
@@ -92,6 +98,7 @@ const api = {
     },
 
     get: async function (endpoint) {
+        console.log(localStorage.getItem("fappToken"))
         if (localStorage.getItem("fappToken")) {
             const res = await fetch(serverAddress + endpoint, {
                 method: "GET",
@@ -172,6 +179,7 @@ const api = {
             return res;
         }
         catch (err) {
+            console.log(err, '  errorrat?')
             throw err
         }
     },
@@ -259,7 +267,7 @@ const api = {
             return count
         }
         catch (err) {
-            throw err
+            return 0
         }
     },
 

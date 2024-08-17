@@ -2,6 +2,8 @@
   import api from "../../apiCalls";
 
   import Switch from "../general/Switch.svelte";
+
+  console.log('why!?')
   let acceptTerms = false;
   let email = "";
   let psevdonim = "";
@@ -34,15 +36,19 @@
         .register({ email: email, username: psevdonim, password: password })
         .then(res => {
           loading = false;
-          window.location.replace("/#/login");
+          window.location.replace("/?#/login");
         })
         .catch(err => {
           loading = false;
           error = err;
           console.dir(err, "  err");
         });
+
+
     }
   };
+
+
 </script>
 
 <style>
@@ -70,7 +76,7 @@
   }
 </style>
 
-<form class="containElement flexColumn flexAlignCenter">
+<form on:submit={register} class="containElement flexColumn flexAlignCenter">
   <label
     for="inputPrimary"
     class={validateEmail(email) && !error ? 'colorSuccess' : 'colorPrimary'}>
@@ -128,9 +134,9 @@
     <span>{error.message}</span>
   {/if}
   <button
-    on:click={register}
-    on:submit={register}
-    class={password.length > 4 && acceptTerms && password === passwordSecond && psevdonim.length > 4 && !error && validateEmail(email) ? 'neon-button-success' : 'neon-button'}>
+    type="submit"
+    class={password.length > 4 && acceptTerms && password === passwordSecond && psevdonim.length > 4 && 
+    !error && validateEmail(email) ? 'neon-button-success' : 'neon-button'}>
     Регистрирай се
   </button>
 

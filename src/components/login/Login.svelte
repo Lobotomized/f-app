@@ -17,7 +17,7 @@
         password: password
       });
       loading = false;
-      window.location.replace("/#/");
+      window.location.replace("/?#/");
     } catch (err) {
       loading = false;
       broken = true;
